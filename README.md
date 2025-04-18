@@ -11,28 +11,33 @@ Aplicativo Flutter para controle de um carrinho Arduino via Bluetooth (HM-10).
 - Interface otimizada para uso horizontal
 - Configuração de endereço MAC
 
+## Ações Disponíveis
+
+| Botão | Ação |
+|-------|------|
+| Y | Acender faróis: Liga os faróis e lanternas |
+| X | Apagar faróis: Desliga os faróis e lanternas |
+| B | Ataque: Aciona o braço servo para atacar |
+
 ## Requisitos
 
 - Flutter 3.x
 - Android SDK
 - Módulo Bluetooth HM-10
-- Arduino com código compatível
-
-## Dependências
-
-- flutter_blue_plus: ^1.14.1
-- permission_handler: ^11.3.0
-- shared_preferences: ^2.2.2
-- cupertino_icons: ^1.0.2
+- Arduino com código parecido com o do `arduino/ard.cpp`
 
 ## Configuração
 
-1. Clone o repositório (git clone https://github.com/mathazel/arduinocontroller)
-2. Execute `flutter pub get`
-3. Configure o endereço MAC do seu dispositivo HM-10 na tela de configuração
-4. Execute o app com `flutter run`
+- Clone o repositório (git clone https://github.com/mathazel/arduinocontroller)
+- Execute `flutter pub get`
+- Execute `flutter run`
 
-## Permissões Necessárias
+## Configurações APP
+- Coloque o endereço MAC do seu módulo HM-10/HM-05 etc...
+- Aperte em Conectar
+- Assim q estiver na interface do controle aperte em reconectar e aguarde
+
+## Permissões Necessárias do app
 
 - Bluetooth
 - Bluetooth Admin
