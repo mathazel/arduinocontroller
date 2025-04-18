@@ -1,11 +1,6 @@
 // inclusão de bibliotecas que darão o suporte necessário para a execução do código 
 #include <SoftwareSerial.h>
 #include <Servo.h>
-// #include <Dabble.h>
-
-// #define CUSTOM_SETTINGS
-// #define INCLUDE_GAMEPAD_MODULE
-
 #define motor_1 12
 #define dir_frent 4
 #define dir_atras 5
@@ -13,7 +8,7 @@
 #define esq_frent 6
 #define esq_atras 7
 #define Farol 8
-#define Lanterna 2
+#define Lanterna 9
 #define debug true
 
 // definição dos ângulos do servo
@@ -45,7 +40,6 @@ void setup()
     pinMode(esq_frent, OUTPUT);
     pinMode(esq_atras, OUTPUT);
     pinMode(Farol, OUTPUT);
-
     digitalWrite(Lanterna, OUTPUT);
     digitalWrite(Farol,HIGH);
     digitalWrite(Lanterna,HIGH);
@@ -59,102 +53,18 @@ void setup()
 // Função onde está o código será executado continuamente
 void loop()
 {
-
     if( nenhumNovoComando() )
     {
-      /*
-        digitalWrite(dir_frent, LOW);
+        /*digitalWrite(dir_frent, LOW);
         digitalWrite(dir_atras, LOW);
         digitalWrite(esq_frent, LOW);
-        digitalWrite(esq_atras, LOW);
-        */
-        
+        digitalWrite(esq_atras, LOW);*/
     }
+
     rencolheBracoSeTempo();
+
     char ch;
-    // if(Serial.available())    // se o Serial Monitor estiver disponível 
-    if(bt.available())           // se o Bluetooth estiver disponível 
-    {
-      Serial.println("O bluetooth funcionou");
-      
-        // ch = Serial.read();   // Ler caractere do Serial Monitor (arduino IDE)
-        ch = bt.read();  
-        Serial.println(ch) ;       // Ler caractere do Bluetooth
-        setUltimoTempo(millis());
-        switch(ch)               // "carrega" o valor da variável ch, se ela for igual a alguns dos casos abaixo elo codigo será executado
-        {
-        case 'b':
-            atacaBracoSeTempo();
-            break;
-            
-        case 'w':
-            //analogWrite(motor_1, 255);
-            //analogWrite(motor_2, 255);
-            Serial.println("Frente");
-            digitalWrite(dir_frent, HIGH);
-            digitalWrite(esq_frent, HIGH);
-            digitalWrite(esq_atras, LOW);
-            digitalWrite(dir_atras, LOW);
-            break;
-            
-        case 's':
-            analogWrite(motor_1, 255);
-            analogWrite(motor_2, 255);
-            digitalWrite(dir_frent, LOW);
-            digitalWrite(esq_frent, LOW);
-            digitalWrite(esq_atras, HIGH);
-            digitalWrite(dir_atras, HIGH);
-            break;
-            
-        case 'a':
-            analogWrite(motor_1, 255);
-            analogWrite(motor_2, 255);
-            digitalWrite(dir_frent, LOW);
-            digitalWrite(esq_frent, HIGH);
-            digitalWrite(esq_atras, LOW);
-            digitalWrite(dir_atras, HIGH);
-            break;
-            
-        case 'd':
-            analogWrite(motor_1, 255);
-            analogWrite(motor_2, 255);
-            digitalWrite(dir_frent, HIGH);
-            digitalWrite(esq_frent, LOW);
-            digitalWrite(esq_atras, HIGH);
-            digitalWrite(dir_atras, LOW);
-            break;
-
-         case 'x':
-            digitalWrite(Farol, HIGH);
-            digitalWrite(Lanterna, HIGH);
-            delay(1000);
-            break;
-
-         case 'c':
-            digitalWrite(Farol, LOW);
-            digitalWrite(Lanterna, LOW);
-            break;
-            
-        default:
-            setUltimoTempo(0);
-        }
-    }else if(!debug){
-      int contador = 0;
-      if(!bt.available()){
-        contador++;
-        digitalWrite(Farol, HIGH);
-        digitalWrite(Lanterna, HIGH);
-        delay(1000);
-        digitalWrite(Farol, LOW);
-        digitalWrite(Lanterna, LOW);
-        delay(1000);
-        Serial.print("Sem bluetooth");
-      }
-      
-    }
-
     if(debug){
-      //Serial.println("AAAAAAAAAAAAAAAAAAAAAA");
       switch(Serial.read())               // "carrega" o valor da variável ch, se ela for igual a alguns dos casos abaixo elo codigo será executado
         {
         case 'b':
@@ -206,19 +116,8 @@ void loop()
             digitalWrite(dir_atras, LOW);
             break;
 
-        case 'l':
-            Serial.print("parou");
-
-            analogWrite(motor_1, 255);
-            analogWrite(motor_2, 255);
-            digitalWrite(dir_frent, LOW);
-            digitalWrite(esq_frent, LOW);
-            digitalWrite(esq_atras, LOW);
-            digitalWrite(dir_atras, LOW);
-            break;
-
          case 'x':
-            Serial.print("Ascende Farol");
+            Serial.print("Acende Farol");
             digitalWrite(Farol, HIGH);
             digitalWrite(Lanterna, HIGH);
             delay(1000);
@@ -234,7 +133,6 @@ void loop()
             setUltimoTempo(0);
         }
     }
-    // Fim do Loop
 }
 
 
