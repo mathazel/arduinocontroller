@@ -20,6 +20,10 @@ class _MacConfigPageState extends State<MacConfigPage> {
   void initState() {
     super.initState();
     _loadSavedMac();
+      SystemChrome.setPreferredOrientations([
+       DeviceOrientation.portraitUp,
+       DeviceOrientation.portraitDown,
+     ]);
   }
 
   Future<void> _loadSavedMac() async {
@@ -52,7 +56,7 @@ class _MacConfigPageState extends State<MacConfigPage> {
       
       if (!mounted) return;
       
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const BluetoothPage(),
@@ -139,6 +143,7 @@ class _MacConfigPageState extends State<MacConfigPage> {
   @override
   void dispose() {
     _macController.dispose();
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     super.dispose();
   }
 } 

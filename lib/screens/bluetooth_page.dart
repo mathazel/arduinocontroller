@@ -19,6 +19,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
   void initState() {
     super.initState();
     _initBluetoothConnection();
+     SystemChrome.setPreferredOrientations([
+       DeviceOrientation.landscapeLeft,
+       DeviceOrientation.landscapeRight,
+     ]);
   }
 
   Future<void> _initBluetoothConnection() async {
@@ -125,10 +129,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
   @override
   void dispose() {
     _bluetoothService.disconnect();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values); 
     super.dispose();
   }
 } 
