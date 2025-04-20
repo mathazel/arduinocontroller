@@ -18,6 +18,7 @@ Aplicativo Flutter para controle de um carrinho Arduino via Bluetooth (HM-10).
 | Y | Acender faróis: Liga os faróis e lanternas |
 | X | Apagar faróis: Desliga os faróis e lanternas |
 | B | Ataque: Aciona o braço servo para atacar |
+| A | Parar: Interrompe o movimento do carrinho |
 
 ## Requisitos
 

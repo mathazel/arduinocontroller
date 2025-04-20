@@ -14,6 +14,7 @@ class BluetoothService {
   fbp.BluetoothDevice? _connectedDevice;
   fbp.BluetoothCharacteristic? _writeCharacteristic;
   
+  // Controle do estado
   final ValueNotifier<String> connectionStatus = ValueNotifier<String>('Desconectado');
   
   bool get isConnected => _connectedDevice != null && _writeCharacteristic != null;
