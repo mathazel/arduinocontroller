@@ -19,7 +19,12 @@ class _BluetoothPageState extends State<BluetoothPage> {
   void initState() {
     super.initState();
     _initBluetoothConnection();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
+
 
   Future<void> _initBluetoothConnection() async {
     bool permissionsGranted = await _bluetoothService.checkPermissions();
@@ -109,12 +114,12 @@ class _BluetoothPageState extends State<BluetoothPage> {
               onButtonPress: _handleButtonPress,
             ),
           ),
-          
+
           // Botões de ação (lado direito)
           Expanded(
             child: ActionPanel(
               onCommandSend: _handleButtonPress,
-              onReconnect: () {}, // Vazio, pois não precisamos mais desse callback
+              onReconnect: () {}
             ),
           ),
         ],
@@ -122,13 +127,11 @@ class _BluetoothPageState extends State<BluetoothPage> {
     );
   }
 
-  @override
+@override
   void dispose() {
     _bluetoothService.disconnect();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values); 
     super.dispose();
+    
   }
-} 
+}
