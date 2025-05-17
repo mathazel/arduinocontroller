@@ -5,26 +5,71 @@ import '../widgets/movement_panel.dart';
 import '../widgets/action_panel.dart';
 
 class BluetoothPage extends StatefulWidget {
-  const BluetoothPage({Key? key}) : super(key: key);
+  final String? macAddress;
+  
+  const BluetoothPage({
+    Key? key,
+    this.macAddress,
+  }) : super(key: key);
 
   @override
   State<BluetoothPage> createState() => _BluetoothPageState();
 }
 
-class _BluetoothPageState extends State<BluetoothPage> {
+class _BluetoothPageState extends State<BluetoothPage> with WidgetsBindingObserver {
   final BluetoothService _bluetoothService = BluetoothService();
   bool _isHoldingButton = false;
 
   @override
   void initState() {
     super.initState();
-    _initBluetoothConnection();
+    WidgetsBinding.instance.addObserver(this);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || 
+        state == AppLifecycleState.inactive || 
+        state == AppLifecycleState.detached) {
+      _bluetoothService.disconnect();
+    }
   }
 
   Future<void> _initBluetoothConnection() async {
     bool permissionsGranted = await _bluetoothService.checkPermissions();
     if (permissionsGranted) {
-      await _bluetoothService.connectToDevice();
+      // Se tiver um MAC específico, salva ele antes de tentar conectar
+      if (widget.macAddress != null) {
+        await _bluetoothService.saveMacAddress(widget.macAddress!);
+      }
+      
+      // Tentar conectar até 3 vezes com um pequeno intervalo entre as tentativas
+      bool connected = false;
+      int attempts = 0;
+
+      while (!connected && attempts < 3) {
+        attempts++;
+        connected = await _bluetoothService.connectToDevice();
+
+        if (!connected && attempts < 3) {
+          // Aguardar um pouco antes de tentar novamente
+          await Future.delayed(const Duration(milliseconds: 1000));
+        }
+      }
+
+      if (!connected && mounted) {
+        // Mostrar mensagem de erro se todas as tentativas falharem
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Não foi possível conectar ao dispositivo. Tente reconectar.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -64,9 +109,15 @@ class _BluetoothPageState extends State<BluetoothPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: ElevatedButton.icon(
-              onPressed: _initBluetoothConnection,
+              onPressed: () async {
+                // Se tiver um MAC específico, salva ele antes de tentar conectar
+                if (widget.macAddress != null) {
+                  await _bluetoothService.saveMacAddress(widget.macAddress!);
+                }
+                await _initBluetoothConnection();
+              },
               icon: const Icon(Icons.bluetooth_searching, size: 20),
-              label: const Text('Reconectar'),
+              label: const Text('Conectar'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue[700],
                 foregroundColor: Colors.white,
@@ -109,12 +160,12 @@ class _BluetoothPageState extends State<BluetoothPage> {
               onButtonPress: _handleButtonPress,
             ),
           ),
-          
+
           // Botões de ação (lado direito)
           Expanded(
             child: ActionPanel(
               onCommandSend: _handleButtonPress,
-              onReconnect: () {}, // Vazio, pois não precisamos mais desse callback
+              onReconnect: () {}
             ),
           ),
         ],
@@ -124,11 +175,9 @@ class _BluetoothPageState extends State<BluetoothPage> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _bluetoothService.disconnect();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     super.dispose();
   }
-} 
+}

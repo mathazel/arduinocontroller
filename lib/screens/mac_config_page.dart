@@ -52,7 +52,7 @@ class _MacConfigPageState extends State<MacConfigPage> {
       
       if (!mounted) return;
       
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const BluetoothPage(),

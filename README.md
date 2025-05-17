@@ -7,9 +7,10 @@ Aplicativo Flutter para controle de um carrinho Arduino via Bluetooth (HM-10).
 - Controle de movimento (WASD)
 - Controle de ataque
 - Controle dos faróis
-- Conexão Bluetooth automática
+- Escaneamento de dispositivos Bluetooth
+- Configuração manual do endereço MAC
 - Interface otimizada para uso horizontal
-- Configuração de endereço MAC
+- Desconexão automática ao sair do app
 
 ## Ações Disponíveis
 
@@ -33,12 +34,24 @@ Aplicativo Flutter para controle de um carrinho Arduino via Bluetooth (HM-10).
 - Execute `flutter pub get`
 - Execute `flutter run`
 
-## Configurações APP
-- Coloque o endereço MAC do seu módulo HM-10/HM-05 etc...
-- Aperte em Conectar
-- Assim q estiver na interface do controle aperte em reconectar 2 vezes e aguarde
+## Como Usar
 
-## Permissões Necessárias do app
+### Método 1: Escaneamento Automático
+1. Abra o aplicativo
+2. Aguarde o escaneamento de dispositivos Bluetooth
+3. Selecione seu dispositivo na lista
+4. Na tela de controle, clique no botão "Conectar" na parte superior
+5. Aguarde a conexão ser estabelecida, caso não conecte aperte novamente
+
+### Método 2: Configuração Manual do MAC
+1. Abra o aplicativo
+2. Clique no ícone de engrenagem na tela de escaneamento
+3. Digite o endereço MAC do seu dispositivo no formato XX:XX:XX:XX:XX:XX
+4. Clique em "Conectar"
+5. Na tela do controle, clique no botão "Conectar" na parte superior
+6. Aguarde a conexão ser estabelecida, caso não conecte aperte novamente
+
+## Permissões Necessárias
 
 - Bluetooth
 - Bluetooth Admin
@@ -52,8 +65,12 @@ Se encontrar problemas:
 1. Verifique se o Bluetooth está ativado
 2. Confirme se o endereço MAC está correto
 3. Certifique-se que todas as permissões foram concedidas
-4. Tente reconectar usando o botão de reconectar no painel do controle
+4. Tente reconectar usando o botão "Conectar" no painel de controle
 5. Verifique se o Arduino está energizado
+6. Se o problema persistir, tente:
+   - Desconectar e reconectar o dispositivo
+   - Reiniciar o aplicativo
+   - Verificar se o dispositivo está no alcance
 
 ## Arduino
 

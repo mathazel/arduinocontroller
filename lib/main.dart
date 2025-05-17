@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'screens/scan_page.dart';
 import 'screens/mac_config_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Forçar orientação horizontal
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
   runApp(const MyApp());
 }
 
@@ -24,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const MacConfigPage(),
+      home: const ScanPage(),
     );
   }
 }
